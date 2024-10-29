@@ -29,19 +29,23 @@ public class EnemyMovement : MonoBehaviour
         else
         {
             Vector2 direction = (playerTransform.position - transform.position).normalized;
-            if (Mathf.Abs(playerTransform.position.x - transform.position.x) < minDistance) direction = new Vector2(0,0);
-            else rb.velocity = new Vector2(moveSpeed * direction.x, rb.velocity.y);
+            if (Mathf.Abs(playerTransform.position.x - transform.position.x) > minDistance) rb.velocity = new Vector2(moveSpeed * direction.x, rb.velocity.y);
         }
         //Animator and flip the enemy
         if(rb.velocity.x<0) {
             animator.SetBool("isRunning", true);
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        //   transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
         else if(rb.velocity.x>0) {
             animator.SetBool("isRunning", true);
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        //    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-        else animator.SetBool("isRunning", false);
+        else 
+        {
+            animator.SetBool("isRunning", false);
+        }
+        transform.localScale = new Vector3(playerTransform.localScale.x*Mathf.Sign(playerTransform.position.x-transform.position.x ), transform.localScale.y, transform.localScale.z);
+        
     }
     void OnCollisionEnter2D(Collision2D other)
     {
